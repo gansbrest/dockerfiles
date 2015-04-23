@@ -17,6 +17,7 @@ RUN \
   npm install -g nodemon && \
   npm install -g gulp && \
   npm install -g bunyan && \
+  npm install -g clean-css && \
   gem install compass -v 1.0.0.alpha.20 --no-ri --no-rdoc
 
 
