@@ -14,6 +14,7 @@ RUN \
 
 # Install other deps
 RUN \
-  npm install -g nodemon
+  npm install -g nodemon && \
+  npm install -g bunyan
 
 EXPOSE 8000
