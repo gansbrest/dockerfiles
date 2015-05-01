@@ -20,5 +20,8 @@ RUN \
   npm install -g clean-css && \
   gem install compass -v 1.0.0.alpha.20 --no-ri --no-rdoc
 
+ADD bin/clusterize.sh /opt/
 
 EXPOSE 8001
+
+CMD ["/opt/clusterize.sh"]
