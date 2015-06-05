@@ -30,7 +30,9 @@ RUN sed -i -e"s/^listen\s*=\s*127.0.0.1:9000/listen = 9000/" /etc/php5/fpm/pool.
 
 RUN rm /etc/nginx/sites-available/default
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-RUN echo "security.limit_extensions = " >> /etc/php5/fpm/pool.d/www.conf
+RUN \
+  echo "security.limit_extensions = " >> /etc/php5/fpm/pool.d/www.conf && \
+  echo "php_admin_value[error_log] = /proc/self/fd/2 " >> /etc/php5/fpm/pool.d/www.conf
 
 COPY conf/nginx/mirtrik.local /etc/nginx/sites-enabled/
 COPY conf/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
