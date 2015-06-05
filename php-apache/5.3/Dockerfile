@@ -2,6 +2,7 @@ FROM       ubuntu:12.04
 MAINTAINER Sergey Khaladzinski <shanderlam@gmail.com>
 
 RUN apt-get update && apt-get install -y \
+    make \
     php-apc \
     php-pear \
     php5-cli \
@@ -25,8 +26,11 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
+# Pecl extensions
+RUN pecl install xdebug-2.2.6
+
 RUN sed -i -e"s/^;\s*daemonize\s*=\s*yes/daemonize = no/" /etc/php5/fpm/php-fpm.conf
-RUN sed -i -e"s/^listen\s*=\s*127.0.0.1:9000/listen = 9000/" /etc/php5/fpm/pool.d/www.conf
+RUN sed -i -e"s/^listen\s*=\s*127.0.0.1:9000/listen = 12001/" /etc/php5/fpm/pool.d/www.conf
 
 RUN rm /etc/nginx/sites-available/default
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
@@ -37,6 +41,7 @@ RUN \
   echo "error_reporting=30711" >> /etc/php5/fpm/php.ini && \
   echo "error_reporting=30711" >> /etc/php5/cli/php.ini
 
+COPY conf/php/xdebug.ini /etc/php5/conf.d/
 COPY conf/nginx/mirtrik.local /etc/nginx/sites-enabled/
 COPY conf/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
