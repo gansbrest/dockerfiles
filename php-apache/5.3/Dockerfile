@@ -32,11 +32,14 @@ RUN rm /etc/nginx/sites-available/default
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN \
   echo "security.limit_extensions = " >> /etc/php5/fpm/pool.d/www.conf && \
-  echo "php_admin_value[error_log] = /proc/self/fd/2 " >> /etc/php5/fpm/pool.d/www.conf
+  echo "php_admin_value[error_log] = /proc/self/fd/2 " >> /etc/php5/fpm/pool.d/www.conf && \
+  echo "catch_workers_output = yes" >> /etc/php5/fpm/pool.d/www.conf && \
+  echo "error_reporting=30711" >> /etc/php5/fpm/php.ini && \
+  echo "error_reporting=30711" >> /etc/php5/cli/php.ini
 
 COPY conf/nginx/mirtrik.local /etc/nginx/sites-enabled/
 COPY conf/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 80
+EXPOSE 9999
 
 CMD ["/usr/bin/supervisord"]
