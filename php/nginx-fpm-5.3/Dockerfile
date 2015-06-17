@@ -38,6 +38,7 @@ RUN \
   echo "security.limit_extensions = " >> /etc/php5/fpm/pool.d/www.conf && \
   echo "php_admin_value[error_log] = /proc/self/fd/2 " >> /etc/php5/fpm/pool.d/www.conf && \
   echo "catch_workers_output = yes" >> /etc/php5/fpm/pool.d/www.conf && \
+  echo "env[XDEBUG_CONFIG] = \$XDEBUG_CONFIG" >> /etc/php5/fpm/pool.d/www.conf && \
   echo "error_reporting=30711" >> /etc/php5/fpm/php.ini && \
   echo "error_reporting=30711" >> /etc/php5/cli/php.ini
 
