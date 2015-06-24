@@ -1,5 +1,5 @@
 server {
-  server_name mirtrik.local;
+  server_name _;
   listen 9999;
   root /app; 
 
