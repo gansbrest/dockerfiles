@@ -43,7 +43,7 @@ RUN \
   echo "error_reporting=30711" >> /etc/php5/cli/php.ini
 
 COPY conf/php/xdebug.ini /etc/php5/conf.d/
-COPY conf/nginx/mirtrik.local /etc/nginx/sites-enabled/
+COPY conf/nginx /etc/nginx/sites-enabled/
 COPY conf/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 9999
