@@ -40,7 +40,9 @@ RUN \
   echo "catch_workers_output = yes" >> /etc/php5/fpm/pool.d/www.conf && \
   echo "env[XDEBUG_CONFIG] = \$XDEBUG_CONFIG" >> /etc/php5/fpm/pool.d/www.conf && \
   echo "error_reporting=30711" >> /etc/php5/fpm/php.ini && \
-  echo "error_reporting=30711" >> /etc/php5/cli/php.ini
+  echo "error_reporting=30711" >> /etc/php5/cli/php.ini && \
+  echo "memory_limit=512M" >> /etc/php5/fpm/php.ini && \
+  echo "memory_limit=512M" >> /etc/php5/cli/php.ini
 
 COPY conf/php/xdebug.ini /etc/php5/conf.d/
 COPY conf/nginx /etc/nginx/sites-enabled/
