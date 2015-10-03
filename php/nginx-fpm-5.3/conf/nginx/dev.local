@@ -67,7 +67,7 @@ server {
 
   # Fighting with Styles? This little gem is amazing.
   # This is for D6
-  location ~ ^/sites/.*/files/imagecache/ {
+  location ~ /(files|multisite_files)/.*/imagecache/ {
     # This is for D7 and D8
     # location ~ ^/sites/.*/files/styles/ {
     try_files $uri @rewrite;
