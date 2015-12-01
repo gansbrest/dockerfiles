@@ -45,6 +45,10 @@ server {
     try_files $uri @rewrite;
   }
 
+  location @mirtrik_prod { 
+    rewrite ^(.*) http://www.mirtrik.by/$1; 
+  }
+
   location @rewrite {
     # You have 2 options here
     # For D7 and above:
@@ -63,6 +67,8 @@ server {
     fastcgi_param SCRIPT_FILENAME $request_filename;
     fastcgi_intercept_errors on;
     fastcgi_pass localhost:12001;
+
+    error_page 404 = @mirtrik_prod;
   }
 
   # Fighting with Styles? This little gem is amazing.
