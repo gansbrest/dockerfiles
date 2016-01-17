@@ -1,6 +1,6 @@
 FROM gansbrest/ubuntu-base
 
-RUN apt-get install unison
+RUN apt-get install unison=2.40.102-2ubuntu1
 
 CMD ["unison", "-socket", "45678"]
 
