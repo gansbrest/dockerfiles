@@ -23,6 +23,19 @@ RUN apt-get update \
     net-tools \
     php-xdebug
 
+# install phpredis extension
+ENV PHPREDIS_VERSION php7
+
+RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz \
+    && cd /tmp \
+    && tar xfz /tmp/redis.tar.gz \
+    && cd /tmp/phpredis-$PHPREDIS_VERSION \
+    && phpize \
+    && ./configure \
+    && make && make install \
+    && rm -rf /tmp/* \
+    && echo "extension=redis.so" > /etc/php/mods-available/redis.ini
+
 # Configure locales
 RUN locale-gen en_US.UTF-8  
 ENV LANG en_US.UTF-8  
@@ -49,7 +62,7 @@ COPY conf/php/xdebug.ini /etc/php/mods-available/
 COPY conf/nginx /etc/nginx/sites-enabled/
 COPY conf/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN phpenmod xdebug
+RUN phpenmod -v 7.0 xdebug redis
 
 EXPOSE 9999
 
