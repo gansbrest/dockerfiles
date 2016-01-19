@@ -33,6 +33,11 @@ ENV LC_ALL en_US.UTF-8
 # Pecl extensions
 RUN pecl install xdebug-2.2.6
 
+# Install phpredis client
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  echo "extension=redis.so" > /etc/php5/conf.d/redis.ini
+
 RUN sed -i -e"s/^;\s*daemonize\s*=\s*yes/daemonize = no/" /etc/php5/fpm/php-fpm.conf
 RUN sed -i -e"s/^error_log\s*=\s*.*$/error_log = \/proc\/self\/fd\/2/" /etc/php5/fpm/php-fpm.conf
 RUN sed -i -e"s/^listen\s*=\s*.*$/listen = 12001/" /etc/php5/fpm/pool.d/www.conf
