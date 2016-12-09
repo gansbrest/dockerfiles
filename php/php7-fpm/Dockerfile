@@ -5,6 +5,8 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         libicu-dev \
+        git \
+        unzip \
     && pecl install xdebug \
     && docker-php-ext-install -j$(nproc) intl iconv mcrypt opcache pdo pdo_mysql \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
@@ -19,3 +21,7 @@ RUN \
   echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 COPY conf/php.ini /usr/local/etc/php/
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+ && composer --version
