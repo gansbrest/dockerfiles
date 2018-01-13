@@ -18,6 +18,7 @@ RUN apt-get update \
     php7.0-mysql \
     php7.0-xmlrpc \
     php7.0-mcrypt \
+    php7.0-dom \
     nginx \
     supervisor \
     vim \
