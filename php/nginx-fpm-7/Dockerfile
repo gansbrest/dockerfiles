@@ -60,21 +60,20 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
-RUN sed -i -e"s/^;\s*daemonize\s*=\s*yes/daemonize = no/" /etc/php/7.0/fpm/php-fpm.conf
-RUN sed -i -e"s/^error_log\s*=\s*.*$/error_log = \/proc\/self\/fd\/2/" /etc/php/7.0/fpm/php-fpm.conf
-RUN sed -i -e"s/^pid = \/run\/php\/php7.0-fpm.pid/pid = \/run\/php7.0-fpm.pid/" /etc/php/7.0/fpm/php-fpm.conf
-RUN sed -i -e"s/^listen\s*=\s*.*$/listen = 12001/" /etc/php/7.0/fpm/pool.d/www.conf
+RUN sed -i -e"s/^;\s*daemonize\s*=\s*yes/daemonize = no/" /etc/php/7.0/fpm/php-fpm.conf \
+ && sed -i -e"s/^error_log\s*=\s*.*$/error_log = \/proc\/self\/fd\/2/" /etc/php/7.0/fpm/php-fpm.conf \
+ && sed -i -e"s/^pid = \/run\/php\/php7.0-fpm.pid/pid = \/run\/php7.0-fpm.pid/" /etc/php/7.0/fpm/php-fpm.conf \
+ && sed -i -e"s/^listen\s*=\s*.*$/listen = 12001/" /etc/php/7.0/fpm/pool.d/www.conf
 
-RUN rm /etc/nginx/sites-available/default
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-RUN \
-  echo "security.limit_extensions = " >> /etc/php/7.0/fpm/pool.d/www.conf && \
-  echo "catch_workers_output = yes" >> /etc/php/7.0/fpm/pool.d/www.conf && \
-  echo "env[XDEBUG_CONFIG] = \$XDEBUG_CONFIG" >> /etc/php/7.0/fpm/pool.d/www.conf && \
-  echo "error_reporting=30711" >> /etc/php/7.0/fpm/php.ini && \
-  echo "error_reporting=30711" >> /etc/php/7.0/cli/php.ini && \
-  echo "memory_limit=512M" >> /etc/php/7.0/fpm/php.ini && \
-  echo "memory_limit=512M" >> /etc/php/7.0/cli/php.ini
+RUN rm /etc/nginx/sites-available/default \
+ && echo "daemon off;" >> /etc/nginx/nginx.conf \
+ && echo "security.limit_extensions = " >> /etc/php/7.0/fpm/pool.d/www.conf && \
+    echo "catch_workers_output = yes" >> /etc/php/7.0/fpm/pool.d/www.conf && \
+    echo "env[XDEBUG_CONFIG] = \$XDEBUG_CONFIG" >> /etc/php/7.0/fpm/pool.d/www.conf && \
+    echo "error_reporting=30711" >> /etc/php/7.0/fpm/php.ini && \
+    echo "error_reporting=30711" >> /etc/php/7.0/cli/php.ini && \
+    echo "memory_limit=512M" >> /etc/php/7.0/fpm/php.ini && \
+    echo "memory_limit=512M" >> /etc/php/7.0/cli/php.ini
 
 COPY conf/php/xdebug.ini /etc/php/7.0/mods-available/
 COPY conf/nginx /etc/nginx/sites-enabled/
