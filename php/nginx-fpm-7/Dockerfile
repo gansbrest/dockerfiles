@@ -23,7 +23,6 @@ RUN apt-get update \
     vim \
     net-tools \
     mc \
-    phpunit \
     php-xdebug
 
 # install phpredis extension
@@ -53,6 +52,13 @@ RUN curl -L -o /tmp/drush.tar.gz https://github.com/drush-ops/drush/archive/$DRU
     && rm -rf /tmp/* \
     && mkdir -p /root/.drush \
     && echo "<?php \$aliases['local'] = array('root' => '/app', 'uri'  => 'mirtrik.local', 'path-aliases' => array( '%dump-dir' => '/tmp', ), );" > /root/.drush/mirtrik.aliases.drushrc.php
+
+#install phpunit
+ENV PHPUNIT_VERSION 6.5
+
+RUN curl -L -o /tmp/phpunit.phar https://phar.phpunit.de/phpunit-$PHPUNIT_VERSION.phar \
+    && chmod +x /tmp/phpunit.phar \
+    && mv /tmp/phpunit.phar /bin/phpunit
 
 # Configure locales
 RUN locale-gen en_US.UTF-8  
