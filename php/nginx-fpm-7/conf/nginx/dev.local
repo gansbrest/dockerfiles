@@ -68,7 +68,7 @@ server {
     fastcgi_intercept_errors on;
     fastcgi_pass 127.0.0.1:12001;
 
-    error_page 404 = @mirtrik_prod;
+    # error_page 404 = @mirtrik_prod;
   }
 
   # Fighting with Styles? This little gem is amazing.
