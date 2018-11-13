@@ -9,22 +9,29 @@ RUN apt-get update \
     && apt-get install -y \
     make \
     php-pear \
-    php7.0-cli \
-    php7.0-dev \
-    php7.0-common \
-    php7.0-curl \
-    php7.0-fpm \
-    php7.0-gd \
-    php7.0-mysql \
-    php7.0-xmlrpc \
-    php7.0-mcrypt \
-    php7.0-dom \
+    php7.2-cli \
+    php7.2-dev \
+    php7.2-common \
+    php7.2-curl \
+    php7.2-fpm \
+    php7.2-gd \
+    php7.2-mysql \
+    php7.2-xmlrpc \
+    php7.2-dom \
+    gcc \
+    make \
+    autoconf \
+    libc-dev \
+    pkg-config \
+    libmcrypt-dev \
     nginx \
     supervisor \
     vim \
     net-tools \
     mc \
     php-xdebug
+
+RUN pecl install mcrypt-1.0.1
 
 # install phpredis extension
 ENV PHPREDIS_VERSION 3.1.6
@@ -37,7 +44,7 @@ RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$P
     && ./configure \
     && make && make install \
     && rm -rf /tmp/* \
-    && echo "extension=redis.so" > /etc/php/7.0/mods-available/redis.ini
+    && echo "extension=redis.so" > /etc/php/7.2/mods-available/redis.ini
 
 #install drush 6
 ENV DRUSH_VERSION 6.6.0
@@ -67,26 +74,26 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 
-RUN sed -i -e"s/^;\s*daemonize\s*=\s*yes/daemonize = no/" /etc/php/7.0/fpm/php-fpm.conf \
- && sed -i -e"s/^error_log\s*=\s*.*$/error_log = \/proc\/self\/fd\/2/" /etc/php/7.0/fpm/php-fpm.conf \
- && sed -i -e"s/^pid = \/run\/php\/php7.0-fpm.pid/pid = \/run\/php7.0-fpm.pid/" /etc/php/7.0/fpm/php-fpm.conf \
- && sed -i -e"s/^listen\s*=\s*.*$/listen = 12001/" /etc/php/7.0/fpm/pool.d/www.conf
+RUN sed -i -e"s/^;\s*daemonize\s*=\s*yes/daemonize = no/" /etc/php/7.2/fpm/php-fpm.conf \
+ && sed -i -e"s/^error_log\s*=\s*.*$/error_log = \/proc\/self\/fd\/2/" /etc/php/7.2/fpm/php-fpm.conf \
+ && sed -i -e"s/^pid = \/run\/php\/php7.2-fpm.pid/pid = \/run\/php7.2-fpm.pid/" /etc/php/7.2/fpm/php-fpm.conf \
+ && sed -i -e"s/^listen\s*=\s*.*$/listen = 12001/" /etc/php/7.2/fpm/pool.d/www.conf
 
 RUN rm /etc/nginx/sites-available/default \
  && echo "daemon off;" >> /etc/nginx/nginx.conf \
- && echo "security.limit_extensions = " >> /etc/php/7.0/fpm/pool.d/www.conf && \
-    echo "catch_workers_output = yes" >> /etc/php/7.0/fpm/pool.d/www.conf && \
-    echo "env[XDEBUG_CONFIG] = \$XDEBUG_CONFIG" >> /etc/php/7.0/fpm/pool.d/www.conf && \
-    echo "error_reporting=30711" >> /etc/php/7.0/fpm/php.ini && \
-    echo "error_reporting=30711" >> /etc/php/7.0/cli/php.ini && \
-    echo "memory_limit=512M" >> /etc/php/7.0/fpm/php.ini && \
-    echo "memory_limit=512M" >> /etc/php/7.0/cli/php.ini
+ && echo "security.limit_extensions = " >> /etc/php/7.2/fpm/pool.d/www.conf && \
+    echo "catch_workers_output = yes" >> /etc/php/7.2/fpm/pool.d/www.conf && \
+    echo "env[XDEBUG_CONFIG] = \$XDEBUG_CONFIG" >> /etc/php/7.2/fpm/pool.d/www.conf && \
+    echo "error_reporting=30711" >> /etc/php/7.2/fpm/php.ini && \
+    echo "error_reporting=30711" >> /etc/php/7.2/cli/php.ini && \
+    echo "memory_limit=512M" >> /etc/php/7.2/fpm/php.ini && \
+    echo "memory_limit=512M" >> /etc/php/7.2/cli/php.ini
 
-COPY conf/php/xdebug.ini /etc/php/7.0/mods-available/
+COPY conf/php/xdebug.ini /etc/php/7.2/mods-available/
 COPY conf/nginx /etc/nginx/sites-enabled/
 COPY conf/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN phpenmod -v 7.0 xdebug redis
+RUN phpenmod -v 7.2 xdebug redis
 
 EXPOSE 9999
 
