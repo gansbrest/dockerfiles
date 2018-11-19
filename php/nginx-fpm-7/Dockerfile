@@ -18,6 +18,8 @@ RUN apt-get update \
     php7.2-mysql \
     php7.2-xmlrpc \
     php7.2-dom \
+    php7.2-soap \
+    php7.2-gmp \
     gcc \
     make \
     autoconf \
@@ -44,7 +46,9 @@ RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$P
     && ./configure \
     && make && make install \
     && rm -rf /tmp/* \
-    && echo "extension=redis.so" > /etc/php/7.2/mods-available/redis.ini
+    && echo "extension=redis.so" > /etc/php/7.2/mods-available/redis.ini \
+    && bash -c "echo extension=/usr/lib/php/20170718/mcrypt.so > /etc/php/7.2/cli/conf.d/mcrypt.ini" \
+    && bash -c "echo extension=/usr/lib/php/20170718/mcrypt.so > /etc/php/7.2/fpm/conf.d/mcrypt.ini"
 
 #install drush 6
 ENV DRUSH_VERSION 6.6.0
@@ -85,7 +89,7 @@ RUN rm /etc/nginx/sites-available/default \
     echo "catch_workers_output = yes" >> /etc/php/7.2/fpm/pool.d/www.conf && \
     echo "env[XDEBUG_CONFIG] = \$XDEBUG_CONFIG" >> /etc/php/7.2/fpm/pool.d/www.conf && \
     echo "error_reporting=30711" >> /etc/php/7.2/fpm/php.ini && \
-    echo "error_reporting=30711" >> /etc/php/7.2/cli/php.ini && \
+    echo "error_reporting=E_ERROR" >> /etc/php/7.2/cli/php.ini && \
     echo "memory_limit=512M" >> /etc/php/7.2/fpm/php.ini && \
     echo "memory_limit=512M" >> /etc/php/7.2/cli/php.ini
 
